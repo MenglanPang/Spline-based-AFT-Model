@@ -6,7 +6,7 @@ R code for implementing the method in article “Pang M, Platt R, Schuster T, Ab
 A semi-parametric accelerated failure time (AFT) model that models the baseline hazard using regression B-splines.
 
 The code has been written using R with the following version information:<br/>
-- R version 3.6.3 (2016-06-21)<br/> 
+- R version 3.6.3 ((2020-02-29))<br/> 
 - Platform x86_64-apple-darwin15.6.0 (64-bit)<br/> 
 - Using R packages:<br/> 
   - survival version 3.1-12
