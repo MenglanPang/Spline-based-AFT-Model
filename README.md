@@ -18,11 +18,11 @@ This program includes all necessary functions to provide estimates of:
 - covariate effects (time ratios)
 - Hazard function and survival curve conditional on an arbitrary covariate pattern
 
-The program is called by the program `Example.R` and `Diagnostics.R`. 
+The program is called by the programs `Example.R` and `Diagnostics.R`. 
 
 #### Code to run the spline-based AFT model:
 ##### `Example.R`
-The program uses the dataset `colon` in the R `survival` package, and generates the results save in  `colon_splineaft.rda`.
+The program uses the dataset `colon` in the R `survival` package, and generates the results saved in  `colon_splineaft.rda`.
 
 #### Code to check the AFT and PH assumptions:
 ##### `Diagnostics.R`
