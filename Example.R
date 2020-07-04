@@ -45,16 +45,16 @@ colnames(colon_flex) <- covname
 # nknot.bh: number of interior knots of the splines for modeling the baseline hazard
 # tol: convergence criterion evaluating two consecutive log-likelihoods;default is 1^-5
 # ndivision : the number of intervals defining the granularity of the numerical computation of integrals;
-  ## the range of the integral is divided by ndivision small interval;
+  ## the range of the integral is divided by ndivision small intervals;
   ## the larger the number is, the longer the estimation takes
-  ## default value is based on "maxtime" such that the number of ndivision=100*floor(max(Time.Obs))  
+  ## default value is based on "maxtime" such that ndivision=100*floor(max(Time.Obs))  
   ## when deciding a customized value of ndivision for the trade-off between precision and computation time,
   ## one may take into account the maximum of Time.Obs and how precise the event is being recorded
      ### For example, if the maxium of Time.Obs is 3 in years, and event is recorded in months (i.e., Time.Obs=0.083(1/12), 0.167(2/12),...),
-         #### then one may choose ndivision=36, so that the numerical integration use one month as the interval;
+         #### then one may choose ndivision=36, so that the numerical integration use one month as the unit of the interval;
      ### If the maxium of Time.Obs is 3 in years, and event is recorded in days (i.e., Time.Obs=0.0027(1/365), 0.0055(2/365),...),
-         #### we need a better granularity for the numerical computation,
-         #### one may choose ndivision=300, so that the numerical integration use approximately 3(~(3*365)/300) days as the interval;
+         #### then we need a better granularity for the numerical computation,
+         #### one may choose ndivision=300, so that the numerical integration use approximately 3(~(3*365)/300) days as the unite of the interval;
 
 sink("colon_cancer_splineaft.txt")
 flex_colon <- SplineAFT(Data=colon_flex,Var=covname[3:16],Time.Obs="time.yr",Delta="status",degree.bh=3,nknot.bh=2,tol=1e-5,ndivision="maxtime")
