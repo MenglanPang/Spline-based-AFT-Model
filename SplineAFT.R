@@ -46,7 +46,7 @@ get_args_for <- function(fun, env = parent.frame(), inherits = FALSE, ..., dots)
   c(args, dots)
 }
 
-SplineAFT<-function(Data,Var,Time.Obs,Delta,degree.bh,nknot.bh,tol=1e-5){
+SplineAFT<-function(Data,Var,Time.Obs,Delta,degree.bh,nknot.bh,tol=1e-5,ndivision="maxtime"){
   
   #Covariate matrix from the data
   Cov<-as.matrix(Data[,Var])
@@ -158,6 +158,7 @@ SplineAFT<-function(Data,Var,Time.Obs,Delta,degree.bh,nknot.bh,tol=1e-5){
               "coefficients"=betaVec,"spline_coef_bh"=gammaVec,
               "degree.bh"=degree.bh,"nknot.bh"=nknot.bh,"bh.knots"=bh.knots,
               "num.events"=num.event,"df"=df,"logLikelihood"=loglikelihood.new,
+              "ndivision"=ndivision,
               "runtime"=elapsedtime))
 }
 
@@ -176,14 +177,14 @@ AFT.logLik.gamma.der<-function(gammaVec
   #df.gamma<-parms$df.gamma
   gamma<-gammaVec
   beta<-betaVec
-  max_obsT<-floor(max(Tt))
+
   W<-exp(Cov%*%beta)*Tt
   W.range<-c(0,W)
   BsW<-bs(W,degree=degree.bh,intercept=TRUE,knots=bh.knots,Boundary.knots=range(W.range))
   environment(integrat) <- environment()
   Interg<-integrat("gamma"
                    #,Cov,beta,gamma,df.beta,df.gamma,
-                   #Tt,degree.bh,bh.knots,max_obsT
+                   #Tt,degree.bh,bh.knots
                    )
   Interg.matrix<-matrix(unlist(Interg),nrow=length(Tt))
   loglik.der<-drop(delta%*%BsW-apply(Interg.matrix,2,sum))
@@ -205,11 +206,11 @@ AFT.logLik.beta.der<-function(betaVec
   #bh.knots<-parms$bh.knots
   #df.beta<-parms$df.beta
   #df.gamma<-parms$df.gamma
-  max_obsT<-floor(max(Tt))
+
   environment(integrat) <- environment()
   Interg<-integrat("beta"
                    #,Cov,beta,gamma,df.beta,df.gamma,
-                   #Tt,degree.bh,bh.knots,max_obsT
+                   #Tt,degree.bh,bh.knots
                    )
   Interg.matrix<-matrix(unlist(Interg),nrow=length(Tt))
   
@@ -230,7 +231,7 @@ AFT.logLik<-function(betaVec,gammaVec
                      ){
   beta<-betaVec  
   gamma<-gammaVec
-  max_obsT<-floor(max(Tt))
+
   ### Compute the spline basis for the full dataset, which is need for log likelihood calculation
   #compute W to determine the boundary knots for the splines
   W<-exp(Cov%*%beta)*Tt
@@ -241,7 +242,7 @@ AFT.logLik<-function(betaVec,gammaVec
   environment(integrat) <- environment()
   logL2<-integrat("none"
                   #,Cov,beta,gamma,df.beta,df.gamma,
-                  #Tt,degree.bh,bh.knots,max_obsT
+                  #Tt,degree.bh,bh.knots
                   )
   LogLik<-logL1-sum(unlist(logL2))
   
@@ -296,11 +297,24 @@ integrand<-function(u,wrt
 
 integrat<-function(wrt
                    #,Cov,beta,gamma,df.beta,df.gamma,
-                   #Tt,degree.bh,bh.knots,max_obsT
+                   #Tt,degree.bh,bh.knots
                    ){
   bound<-cbind(0,Tt)
+  #divide the entire range to many small intervals;
+  #the number of intervals is to be specified by user (ndivision argument)
+  #it defines the granularity of the calculation
+  #the larger the number is, the longer the estimation takes
+  #we may take into account the the maximum of the event time and data granularity,i.e., how precise the event is being recorded
+  #by default, the number of interval=100*floor(maximum of the observed time)
   
-  xmatrix<-t(apply(bound,1,function(x) {seq(x[1],x[2],length=100*max_obsT)}))
+  if (ndivision=="maxtime"){
+    max_obsT<-floor(max(Tt))  
+    num_divide<-max_obsT*100
+  } else{
+    num_divide<-ndivision
+  }
+  
+  xmatrix<-t(apply(bound,1,function(x) {seq(x[1],x[2],length=num_divide)}))
   step<-apply(xmatrix,1,function(x) (x[2]-x[1]))
   
   xmatrix<-(xmatrix+step/2)[,-ncol(xmatrix)]
