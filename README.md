@@ -22,10 +22,10 @@ The program is called by the programs `Example.R` and `Diagnostics.R`.
 
 #### Code to run the spline-based AFT model:
 ##### `Example.R`
-The program uses the dataset `colon` in the R `survival` package, and generates the results saved in  `colon_splineaft.rda`.
+The program uses the dataset `colon` in the R `survival` package, and generates the results saved in  `colon_splineaft.RData`.
 
 #### Code to check the AFT and PH assumptions:
 ##### `Diagnostics.R`
-The program loads `colon_splineaft.rda`.
+The program loads `colon_splineaft.RData`.
 
 For questions or comments about the code please contact Menglan Pang (menglan.pang at mail.mcgill.ca).
