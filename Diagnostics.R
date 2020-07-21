@@ -52,7 +52,7 @@ lnormal.S <- pnorm(log(colon_flex$time.yr),mean=lnormal.meanlog,sd=lnormal.sdlog
 lnormal.res <- -log(lnormal.S)
 
 ##### Spline-based AFT #####
-load("colon_splineaft.rda")
+load("colon_splineaft.RData")
 source("SplineAFT.R")
 flex.S <- rep(NA,dim(colon_flex)[1])
 
@@ -66,7 +66,7 @@ flex.res <- -log(flex.S)
 
 ##### smoothed error AFT model developed by Komárek et al.#####
 # Komárek A, Lesaffre E, Hilton JF. Journal of Computational and Graphical Statistics. 2005 Sep 1;14(3):726-45.
-load("colon_smooth.rda")
+load("colon_smooth.RData")
 smooth.S <- rep(NA,dim(colon_flex)[1])
 for (i in 1:dim(colon_flex)[1]){
   cov.val <- as.numeric(colon_flex[i,cov])
