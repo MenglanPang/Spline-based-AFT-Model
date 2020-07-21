@@ -59,7 +59,7 @@ colnames(colon_flex) <- covname
 sink("colon_cancer_splineaft.txt")
 flex_colon <- SplineAFT(Data=colon_flex,Var=covname[3:16],Time.Obs="time.yr",Delta="status",degree.bh=3,nknot.bh=2,tol=1e-5,ndivision="maxtime")
 sink()
-save(flex_colon,file="colon_splineaft.rda")
+save(flex_colon,file="colon_splineaft.RData")
 
 ##### Estimated hazard function for a specific covariate pattern #####
 cov.val <- rep(NA,14)
@@ -95,5 +95,5 @@ smooth_colon <- smoothSurvReg(Surv(time.yr,status)~rx_Lev+rx_Lev5FU
                             +differ_mod+differ_poor
                             +extent_muscle+extent_serosa+extent_cs
                             +surg+node4,data=colon_flex,info=FALSE)
-save(smooth_colon,file=paste0("colon_smooth.rda"))
+save(smooth_colon,file=paste0("colon_smooth.RData"))
 
