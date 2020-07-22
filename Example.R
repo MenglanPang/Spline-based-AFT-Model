@@ -13,7 +13,6 @@ colon$rx_Lev5FU <- ifelse(colon$rx=="Lev+5FU",1,0)
 # To avoid potential numerical problems, it is recommended to standardze/normalize continuous variables using Z-score transformation:
 # X* = (X - mean)/SD
 # (If preferable, "mean" can be replaced by e.g, Median or other value within the range of the data)
-
 colon$age_c <- scale(colon$age)
 
 colon$differ_mod <- ifelse(colon$differ==2,1,0)
@@ -95,8 +94,8 @@ surv.est <- SurvEst(fit=flex_colon,time=seq(0,6,0.1),cov=cov.val,Data=colon_flex
 plot(surv.est$time,surv.est$survival,type="l",col="blue",xlab="Time (Year)",ylab="Survival")
 
 
-##### Smoothed error AFT model developed by Komárek et al.#####
-# Komárek A, Lesaffre E, Hilton JF. Journal of Computational and Graphical Statistics. 2005;14(3):726-45.
+##### Smoothed error AFT model developed by KomÃ¡rek et al.#####
+# KomÃ¡rek A, Lesaffre E, Hilton JF. Journal of Computational and Graphical Statistics. 2005;14(3):726-45.
 
 library(smoothSurv)
 smooth_colon <- smoothSurvReg(Surv(time.yr,status)~rx_Lev+rx_Lev5FU
