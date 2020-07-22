@@ -22,6 +22,7 @@
 
 
 library(rootSolve)
+library(splines)
 
 get_args_for <- function(fun, env = parent.frame(), inherits = FALSE, ..., dots) {
   potential <- names(formals(fun))
